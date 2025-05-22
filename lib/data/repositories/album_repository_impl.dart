@@ -1,4 +1,5 @@
 import '../../domain/entities/album.dart';
+import '../../domain/entities/photo.dart';
 import '../../domain/repositories/album_repository.dart';
 import '../datasources/local/album_local_data_source.dart';
 import '../datasources/remote/album_remote_data_source.dart';
@@ -17,7 +18,6 @@ class AlbumRepositoryImpl implements AlbumRepository {
   Future<List<Album>> getAlbums() async {
     try {
       final remoteAlbums = await remoteDataSource.getAlbums();
-      // Cache all albums when we fetch the list
       await Future.wait(
           remoteAlbums.map((album) => localDataSource.cacheAlbumDetails(album))
       );
@@ -41,6 +41,17 @@ class AlbumRepositoryImpl implements AlbumRepository {
         return cachedAlbum.toEntity();
       }
       rethrow;
+    }
+  }
+
+  Future<List<Photo>> getPhotos(int albumId) async {
+    try {
+      final remotePhotos = await remoteDataSource.getPhotosByAlbum(albumId);
+      await localDataSource.cachePhotos(remotePhotos);
+      return remotePhotos.map((model) => model.toEntity()).toList();
+    } catch (_) {
+      final cachedPhotos = await localDataSource.getCachedPhotos(albumId);
+      return cachedPhotos.map((model) => model.toEntity()).toList();
     }
   }
 }

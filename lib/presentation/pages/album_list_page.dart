@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../bloc/album_bloc.dart';
+import '../../bloc/album_state.dart';
+import '../../core/utils/color_utils.dart';
 import '../../core/widgets/error_widget.dart';
-import '../bloc/album_bloc.dart';
-import '../bloc/album_state.dart';
 import '../widgets/album_item.dart';
 import '../widgets/loading_indicator.dart';
 
@@ -26,7 +27,10 @@ class AlbumListPage extends StatelessWidget {
               itemCount: state.albums.length,
               itemBuilder: (context, index) {
                 final album = state.albums[index];
-                return AlbumItem(album: album);
+                return AlbumItem(
+                  album: album,
+                  index: index,
+                );
               },
             );
           }

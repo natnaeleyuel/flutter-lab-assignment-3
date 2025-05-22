@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:myflutteralbumapp/presentation/bloc/album_event.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'bloc/album_bloc.dart';
+import 'bloc/album_event.dart';
 import 'core/utils/router_utils.dart';
 import 'data/datasources/local/album_local_data_source.dart';
 import 'data/datasources/remote/album_remote_data_source.dart';
 import 'data/repositories/album_repository_impl.dart';
 import 'domain/usecases/get_album_details.dart';
 import 'domain/usecases/get_albums.dart';
-import 'presentation/bloc/album_bloc.dart';
 
 class MyApp extends StatelessWidget {
   final SharedPreferences sharedPreferences;

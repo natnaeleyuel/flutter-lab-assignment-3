@@ -3,10 +3,12 @@ import 'package:http/http.dart' as http;
 import '../../../core/constants/app_constants.dart';
 import '../../../core/errors/exceptions.dart';
 import '../../models/album_model.dart';
+import '../../models/photo_model.dart';
 
 abstract class AlbumRemoteDataSource {
   Future<List<AlbumModel>> getAlbums();
   Future<AlbumModel> getAlbumDetails(int id);
+  Future<List<PhotoModel>> getPhotosByAlbum(int albumId);
 }
 
 class AlbumRemoteDataSourceImpl implements AlbumRemoteDataSource {
@@ -32,6 +34,19 @@ class AlbumRemoteDataSourceImpl implements AlbumRemoteDataSource {
       return AlbumModel.fromJson(jsonDecode(response.body));
     } else {
       throw ServerException('Failed to load album details');
+    }
+  }
+
+  @override
+  Future<List<PhotoModel>> getPhotosByAlbum(int albumId) async {
+    final response = await client.get(
+      Uri.parse('${AppConstants.baseUrl}/albums/$albumId/photos'),
+    );
+    if (response.statusCode == 200) {
+      List<dynamic> body = jsonDecode(response.body);
+      return body.map((dynamic item) => PhotoModel.fromJson(item)).toList();
+    } else {
+      throw ServerException('Failed to load photos');
     }
   }
 }

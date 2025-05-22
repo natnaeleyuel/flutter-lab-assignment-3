@@ -43,3 +43,16 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+echo "/android/
+/ios/
+/.dart_tool/
+/.idea/
+/.vscode/
+/.flutter-plugins
+/.flutter-plugins-dependencies
+/.metadata
+.packages
+pubspec.lock
+*.lock
+" > .gitignore
